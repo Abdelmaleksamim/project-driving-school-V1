@@ -1,26 +1,5 @@
-// controllers/clientController.js
 const db = require('../config/db');
-const supabase = require('../supabase');
 
-// Upload image to Supabase and return the public URL
-const uploadImageToSupabase = async (file) => {
-  const fileName = `${Date.now()}-${file.originalname}`;
-  const { data, error } = await supabase.storage
-    .from('image')
-    .upload(fileName, file.buffer, {
-      contentType: file.mimetype,
-    });
-
-  if (error) throw error;
-
-  const { data: urlData } = supabase.storage
-    .from('image')
-    .getPublicUrl(fileName);
-
-  return urlData.publicUrl;
-};
-
-// ✅ Add new client
 exports.addClient = async (req, res) => {
   try {
     const {
@@ -28,35 +7,47 @@ exports.addClient = async (req, res) => {
       type_permis, date_inscription, Prix, Duree, Type_Code,
       Statut, photos, carte_id, contrat, visite_medicale
     } = req.body;
-    db.query(`SELECT N_serie FROM Client WHERE N_serie = ?`, [N_serie], async (err, results) => {
-      if (err) return res.status(500).json({ error: err.message });
 
-      if (results.length > 0) {
-        return res.status(400).json({ error: "N_serie déjà existe" });
-      }
-
-      let photoUrl = '';
-      if (req.file) {
-        photoUrl = await uploadImageToSupabase(req.file);
-      }
-
-      const sql = `INSERT INTO Client SET ?`;
-      const newClient = {
-        N_serie, nom, prenom, CIN, adresse, date_nais, tel,
-        type_permis, date_inscription, Prix, Duree, Type_Code,
-        Statut, photo: photoUrl, admin : 1,
-        photos, carte_id, contrat, visite_medicale
-      };
-
-      db.query(sql, newClient, (err, result) => {
+    db.query(
+      `SELECT N_serie FROM Client WHERE N_serie = ?`,
+      [N_serie],
+      async (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Client ajouté avec succès' });
-      });
-    });
+
+        if (results.length > 0) {
+          return res.status(400).json({ error: "N_serie déjà existe" });
+        }
+
+        let photoUrl = "";
+        if (req.file) {
+          photoUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+        }
+
+        const newClient = {
+          N_serie, nom, prenom, CIN, adresse, date_nais, tel,
+          type_permis, date_inscription, Prix, Duree, Type_Code,
+          Statut,
+          photo: photoUrl,
+          admin: 1,
+          photos, carte_id, contrat, visite_medicale
+        };
+
+        const sql = `INSERT INTO Client SET ?`;
+
+        db.query(sql, newClient, (err, result) => {
+          if (err) return res.status(500).json({ error: err.message });
+          res.status(201).json({
+            message: 'Client ajouté avec succès',
+            image: photoUrl
+          });
+        });
+      }
+    );
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 
@@ -77,29 +68,34 @@ exports.updateClient = async (req, res) => {
     const {
       nom, prenom, CIN, adresse, date_nais, tel,
       type_permis, date_inscription, Prix, Duree, Type_Code,
-      Statut, photos, carte_id, contrat, visite_medicale
+      Statut, photos, carte_id, contrat, visite_medicale, image_url
     } = req.body;
 
-    let photoUrl = req.body.image_url || '';
+    let photoUrl = req.body.image_url || "";
     if (req.file) {
-      photoUrl = await uploadImageToSupabase(req.file);
+      photoUrl = `http://localhost:5000/uploads/${req.file.filename}`;
     }
 
     const sql = `UPDATE Client SET ? WHERE N_serie = ?`;
     const updatedClient = {
       nom, prenom, CIN, adresse, date_nais, tel,
       type_permis, date_inscription, Prix, Duree, Type_Code,
-      Statut, photo: photoUrl,
+      Statut,
+      photo: photoUrl,
       photos, carte_id, contrat, visite_medicale
     };
 
     db.query(sql, [updatedClient, id], (err, result) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: 'Client mis à jour avec succès' });
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+        if (err) return res.status(500).json({ error: err.message });
+
+        res.json({
+          message: "Client mis à jour avec succès",
+          image: photoUrl
+        });
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
 };
 
 

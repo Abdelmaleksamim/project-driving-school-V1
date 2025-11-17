@@ -8,15 +8,22 @@ const pertesRoutes = require('./routes/pertes');
 const examensRoutes = require('./routes/examens');
 const statsRoute = require('./routes/statsRoute');
 
+
 dotenv.config();
 const app = express();
-
 app.use(cors());
 app.use(express.json());
+
+
+
+
+
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientRoutes);
+app.use('/uploads', express.static('uploads'));
+
 
 app.use('/api/paiements', paiementRoutes);
 app.use('/api/pertes', pertesRoutes);
