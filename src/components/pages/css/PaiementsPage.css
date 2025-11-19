@@ -116,33 +116,22 @@
   gap: 6px;
   width: 100%;
 }
-
 .btn-edit {
-  background-color: #ffc107;
-  color: #212529;
-  width: 100%;
-  padding: 8px 12px;
-  margin: 0;
-  font-size: 13px;
-  justify-content: center;
+background-color: #3b82f6;
+color: white;
 }
 
 .btn-edit:hover {
-  background-color: #e0a800;
+background-color: #2563eb;
 }
 
 .btn-delete {
-  background-color: #dc3545;
-  color: white;
-  width: 100%;
-  padding: 8px 12px;
-  margin: 0;
-  font-size: 13px;
-  justify-content: center;
+background-color: #ef4444;
+color: white;
 }
 
 .btn-delete:hover {
-  background-color: #c82333;
+background-color: #b91c1c;
 }
 
 .btn-cancel {

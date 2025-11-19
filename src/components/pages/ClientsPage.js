@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../pages/css/ClientsPage.css';
+import { Users, Edit, Trash2, Search  } from 'lucide-react'
 import axios from 'axios';
 
 const ClientsPage = () => {
@@ -247,7 +248,7 @@ const DocumentSection = ({ client }) => {
 
   return (
 <div className="clients-container">
-      <h2>👥 Gestion des clients</h2>
+      <h2><Users size={32} /> Gestion des clients</h2>
       {/* Client Form */}
       <form onSubmit={handleSubmit} className="client-form">
         <div className="form-row">
@@ -516,6 +517,7 @@ const DocumentSection = ({ client }) => {
           <h3>Liste des Clients ({clients.length})</h3>
           <div className="table-controls">
             <div className="search-box">
+              <Search className="search-icon" size={18} color="#888" />
               <input
                 type="text"
                 placeholder="Rechercher par nom, prénom, CIN..."
@@ -621,14 +623,14 @@ const DocumentSection = ({ client }) => {
                         className="btn btn-edit"
                         title="Modifier"
                       >
-                        ✏️
+                        <Edit size={20} color="#ffffff" />
                       </button>
                       <button
                         onClick={() => handleDelete(client.N_serie)}
                         className="btn btn-delete"
                         title="Supprimer"
                       >
-                        🗑️
+                        <Trash2 size={20} color="#ffffff" />
                       </button>
                     </td>
                   </tr>

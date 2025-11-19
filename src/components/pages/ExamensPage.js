@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../pages/css/ClientsPage.css';
+import '../pages/css/ExamensPage.css';
+import { FileText, Edit, Trash2, Search } from "lucide-react";
 
 const ExamensPage = () => {
-
     function formatDate(dateStr) {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -191,7 +191,7 @@ const ExamensPage = () => {
 
   return (
     <div className="examens-container">
-      <h2>📝 Gestion des Examens</h2>
+      <h2><FileText size={32} /> Gestion des Examens</h2>
             {/* Exam Section */}
       <section className="section">
         {/* Exam Form */}
@@ -307,10 +307,9 @@ const ExamensPage = () => {
                 value={examSearchTerm}
                 onChange={(e) => setExamSearchTerm(e.target.value)}
               />
-              <span className="search-icon">🔍</span>
+              <span className="search-icon"><Search size={18} color="#888" /></span>
             </div>
           </div>
-          
           {filteredExams.length > 0 ? (
             <table className="data-table">
               <thead>
@@ -341,13 +340,13 @@ const ExamensPage = () => {
                           onClick={() => handleEditExam(ex.id_examen)}
                           className="btn btn-edit"
                         >
-                          ✏️ Modifier
+                          <Edit size={20} color="#ffffff" />
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDeleteExam(ex.id_examen)}
                           className="btn btn-delete"
                         >
-                          🗑️ Supprimer
+                          <Trash2 size={20} color="#ffffff" />
                         </button>
                       </div>
                     </td>

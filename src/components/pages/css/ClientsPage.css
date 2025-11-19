@@ -246,7 +246,12 @@
 
 .search-box {
   position: relative;
-  min-width: 250px;
+  display: flex;
+  align-items: center;
+}
+.search-box .search-icon {
+  position: absolute;
+  left: 1rem;
 }
 
 .search-box input {
@@ -262,14 +267,7 @@
   box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
 }
 
-.search-box::before {
-  content: '🔍';
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-light);
-}
+
 
 .filter-box select {
   padding: 0.65rem 1rem;
@@ -345,8 +343,20 @@
 /* Action Buttons */
 .actions-cell {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  white-space: nowrap;
+  padding: 0.75rem 1rem;
+}
+.actions-cell .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px; /* حجم موحد لكل زر */
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .btn-edit {
@@ -520,9 +530,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0.5rem;
     border: none;
     border-bottom: 1px solid var(--light-gray);
+    vertical-align: middle;
   }
   
   .clients-table td::before {

@@ -6,25 +6,6 @@ import "./css/Dashboard.css";
 import { Users, Wallet, Calendar} from "lucide-react";
 import { ActiveLinkContext } from "../context/ActiveLinkContext";
 
-
-
-
-
-const paymentsData = [
-  { name: 'Lun', amount: 400 },
-  { name: 'Mar', amount: 600 },
-  { name: 'Mer', amount: 200 },
-  { name: 'Jeu', amount: 800 },
-  { name: 'Ven', amount: 500 },
-  { name: 'Sam', amount: 100 },
-  { name: 'Dim', amount: 50 },
-];
-
-const examData = [
-  { name: 'Code', value: 15 },
-  { name: 'Conduite', value: 10 },
-];
-
 const COLORS = ['#0088FE', '#00C49F'];
 
 const Dashboard = () => {
@@ -38,8 +19,9 @@ const Dashboard = () => {
     const { setActiveLink } = useContext(ActiveLinkContext);
     const [clientStats, setClientStats] = useState({ totalClients: 0, monthlyClients: 0 });
     const [paiementStats, setPaiementStats] = useState({ weeklyPayments: 0, todayPayments: 0 });
-    const [examStats, setExamStats] = useState({ weeklyExams: 0 });
-
+    const [examStats, setExamStats] = useState({ thisMonthExams: 0 });
+    const [paymentsData, setPaymentsData] = useState([]);
+    const [examPieData, setExamPieData] = useState([]);
 
     useEffect(() => {
     // Clients
@@ -66,6 +48,22 @@ const Dashboard = () => {
             .then(data => setChartData(data))
             .catch(err => console.error("Erreur:", err));
     }, []);
+    useEffect(() => {
+        fetch("http://localhost:5000/api/stats/paymentsThisWeek")
+            .then(res => res.json())
+            .then(data => { const cleanData = data.map(item => ({
+                            name: item.name,
+                            amount: Number(item.amount)
+                            })); setPaymentsData(cleanData)})
+            .catch(err => console.log("Erreur:", err));
+    }, []);
+    useEffect(() => {
+    fetch("http://localhost:5000/api/stats/examsLast15Days")
+        .then(res => res.json())
+        .then(data => setExamPieData(data))
+        .catch(err => console.error("Erreur:", err));
+    }, []);
+
 
 
 
@@ -95,8 +93,8 @@ const Dashboard = () => {
                 <div className="stat-card payments-card">
                     <div className="stat-icon"><Wallet size={32} /></div>
                     <div className="stat-content">
-                        <h3>Paiements</h3>
-                        <p className="stat-value">{paiementStats.weeklyPayments}</p>
+                        <h3>Paiements Cette Semaine</h3>
+                        <p className="stat-value">{paiementStats.weeklyPayments} </p>
                         <p className="stat-change">+{paiementStats.todayPayments} aujourd'hui</p>
                     </div>
                 </div>
@@ -105,8 +103,8 @@ const Dashboard = () => {
                     <div className="stat-icon"><Calendar size={32} /></div>
                     <div className="stat-content">
                         <h3>Examens</h3>
-                        <p className="stat-value">{examStats.weeklyExams}</p>
-                        <p className="stat-change">Cette semaine</p>
+                        <p className="stat-value">{examStats.thisMonthExams}</p>
+                        <p className="stat-change">cette mois</p>
                     </div>
                 </div>
 
@@ -152,7 +150,7 @@ const Dashboard = () => {
                         <ResponsiveContainer width="100%" height={300}>
                             <PieChart>
                                 <Pie
-                                    data={examData}
+                                    data={examPieData}
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
@@ -161,9 +159,9 @@ const Dashboard = () => {
                                     dataKey="value"
                                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                 >
-                                    {examData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
+                                {examPieData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
                                 </Pie>
                                 <Tooltip />
                             </PieChart>

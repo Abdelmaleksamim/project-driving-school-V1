@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './css/PaiementsPage.css';
+import { Wallet, Search, Edit, Trash2 } from 'lucide-react';
 
 const PaiementsPage = () => {
 
@@ -286,7 +287,7 @@ const PaiementsPage = () => {
 
     return (
         <div className="paiements-container">
-        <h2>💰 Gestion Financière</h2>
+        <h2><Wallet size={32} /> Gestion Financière</h2>
         {/* Payments Section */}
         <section className="section">
             <h3>Paiements</h3>
@@ -381,7 +382,7 @@ const PaiementsPage = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <span className="search-icon">🔍</span>
+                <span className="search-icon"><Search size={18} color="#888" /></span>
                 </div>
             </div>
 
@@ -419,13 +420,13 @@ const PaiementsPage = () => {
                                     N_serie: p.N_serie,
                                 });
                             }} className='btn btn-edit'>
-                            ✏️
+                            <Edit size={20} color="#ffffff" />
                             </button>
                             <button
                             onClick={() => handleDeletePayment(p.id_paiement)}
                             className="btn btn-delete"
                             >
-                            🗑️
+                            <Trash2 size={20} color="#ffffff" />
                             </button>
                         </td>
                         </tr>
@@ -515,7 +516,7 @@ const PaiementsPage = () => {
                     value={lossSearchTerm}
                     onChange={(e) => setLossSearchTerm(e.target.value)}
                 />
-                <span className="search-icon">🔍</span>
+                <span className="search-icon"><Search size={18} color="#888" /></span>
                 </div>
             </div>
 
