@@ -77,21 +77,69 @@ router.get('/stats/paiements', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+router.get('/stats/paymentsThisWeek', (req, res) => {
+    const sql = `
+        SELECT
+            DATE(date_paiement) AS date,
+            SUM(montant) AS totalAmount
+        FROM paiements
+        WHERE date_paiement >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        GROUP BY DATE(date_paiement)
+        ORDER BY DATE(date_paiement);
+    `;
 
+    db.query(sql, (err, results) => {
+        if (err) {console.log("SQL ERROR:", err);
+            return res.status(500).json({ error: "Database error" })};
+        const days = ["Lun", "Mar", "Mer", "Jeu", "Van", "Sam", "Dim"];
+
+        const formatted = results.map((r) => {
+            const dateObj = new Date(r.date);
+            return {
+                name: days[dateObj.getDay()],
+                amount: r.totalAmount,
+            };
+        });
+
+        res.json(formatted);
+    });
+});
+
+// Compter les examens passés cette semaine (lundi à dimanche)
 router.get('/stats/examens', async (req, res) => {
     try {
-        // Compter les examens passés cette semaine (lundi à dimanche)
-        const [[{ weeklyExams }]] = await db.promise().query(`
-            SELECT COUNT(*) AS weeklyExams
-            FROM examens
-            WHERE YEARWEEK(date_examen, 1) = YEARWEEK(CURDATE(), 1)
+        const [[{ thisMonthExams }]] = await db.promise().query(`
+                    SELECT COUNT(*) AS thisMonthExams
+                    FROM examens
+                    WHERE MONTH(date_examen) = MONTH(CURDATE())
+                    AND YEAR(date_examen) = YEAR(CURDATE())
         `);
 
-        res.json({ weeklyExams });
+        res.json({ thisMonthExams });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
+router.get("/stats/examsLast15Days", (req, res) => {
+    const sql = `
+            SELECT type_examen AS type, COUNT(*) AS total
+            FROM examens
+            WHERE date_examen BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+            GROUP BY type_examen;
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        const formatted = results.map(r => ({
+            name: r.type,
+            value: r.total
+        }));
+
+        res.json(formatted);
+    });
+});
+
 
 
 module.exports = router;
