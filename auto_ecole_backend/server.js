@@ -9,6 +9,7 @@ const examensRoutes = require('./routes/examens');
 const statsRoute = require('./routes/statsRoute');
 
 
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -45,3 +46,5 @@ app.post('/api/check-documents', (req, res) => {
 
   res.json(result);
 });
+
+

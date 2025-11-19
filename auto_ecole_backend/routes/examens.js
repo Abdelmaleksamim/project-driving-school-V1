@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db'); // adjust this path to your config
+const db = require('../config/db');
 
 // POST /api/examens
 router.post('/', async (req, res) => {

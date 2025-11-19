@@ -26,6 +26,31 @@ router.get('/stats/clients', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+router.get("/stats/clientsPermonth", (req, res) => {
+    const sql = `
+        SELECT
+        MONTH(date_inscription) AS month,
+        COUNT(*) AS total
+        FROM Client
+        GROUP BY MONTH(date_inscription)
+        ORDER BY MONTH(date_inscription);
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        const months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        ];
+
+        const formatted = results.map((r) => ({
+        name: months[r.month - 1],
+        clients: r.total,
+        }));
+
+        res.json(formatted);
+    });
+});
 
 // Paiements cette semaine et aujourd'hui
 router.get('/stats/paiements', async (req, res) => {
