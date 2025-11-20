@@ -53,7 +53,7 @@ exports.addClient = async (req, res) => {
 
 // ✅ Get all clients
 exports.getAllClients = (req, res) => {
-  const sql = `SELECT * FROM Client`;
+  const sql = `SELECT * FROM Client ORDER BY date_inscription DESC, N_serie DESC`;
   db.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
