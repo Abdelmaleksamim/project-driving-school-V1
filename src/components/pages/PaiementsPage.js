@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './css/PaiementsPage.css';
+import '../pages/css/PaiementsPage.css';
 import { Wallet, Search, Edit, Trash2 } from 'lucide-react';
 
 const PaiementsPage = () => {
@@ -410,24 +410,30 @@ const PaiementsPage = () => {
                         <td>{p.montant} DH</td>
                         <td>{p.N_serie}</td>
                         <td className="actions-cell">
-                            <button onClick={() => {
-                                setEditingPaymentId(p.id_paiement);
-                                setPayment({
-                                    date_paiement: formatDate(p.date_paiement),
-                                    nom: p.nom,
-                                    prenom: p.prenom,
-                                    montant: p.montant,
-                                    N_serie: p.N_serie,
-                                });
-                            }} className='btn btn-edit'>
-                            <Edit size={20} color="#ffffff" />
-                            </button>
-                            <button
-                            onClick={() => handleDeletePayment(p.id_paiement)}
-                            className="btn btn-delete"
-                            >
-                            <Trash2 size={20} color="#ffffff" />
-                            </button>
+                            <div className="action-buttons">
+                                <button
+                                    onClick={() => {
+                                        setEditingPaymentId(p.id_paiement);
+                                        setPayment({
+                                            date_paiement: formatDate(p.date_paiement),
+                                            nom: p.nom,
+                                            prenom: p.prenom,
+                                            montant: p.montant,
+                                            N_serie: p.N_serie,
+                                        });
+                                    }}
+                                    className="btn btn-edit"
+                                >
+                                    <Edit size={20} color="#ffffff" />
+                                </button>
+
+                                <button
+                                    onClick={() => handleDeletePayment(p.id_paiement)}
+                                    className="btn btn-delete"
+                                >
+                                    <Trash2 size={20} color="#ffffff" />
+                                </button>
+                            </div>
                         </td>
                         </tr>
                     ))}
@@ -540,18 +546,20 @@ const PaiementsPage = () => {
                         <td>{l.montant} DH</td>
                         <td>{l.nom_perte}</td>
                         <td className="actions-cell">
-                            <button
-                            onClick={() => handleEditLoss(l)}
-                            className="btn btn-edit"
-                            >
-                            ✏️
-                            </button>
-                            <button
-                            onClick={() => handleDeleteLoss(l.id_perte)}
-                            className="btn btn-delete"
-                            >
-                            🗑️
-                            </button>
+                            <div className='action-buttons'>
+                                <button
+                                onClick={() => handleEditLoss(l)}
+                                className="btn btn-edit"
+                                >
+                                <Edit size={20} color="#ffffff" />
+                                </button>
+                                <button
+                                onClick={() => handleDeleteLoss(l.id_perte)}
+                                className="btn btn-delete"
+                                >
+                                <Trash2 size={20} color="#ffffff" />
+                                </button>
+                            </div>
                         </td>
                         </tr>
                     ))}

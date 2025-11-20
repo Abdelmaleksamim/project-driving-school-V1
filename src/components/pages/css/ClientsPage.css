@@ -1,4 +1,4 @@
-/* ClientsPage.css - Enhanced Version */
+
 :root {
   /* Color Variables */
   --primary-color: #4CAF50;
@@ -158,7 +158,7 @@
 }
 
 .file-upload-label:hover {
-  background: var(--primary-hover);
+  background: var(--danger-color);
 }
 
 .file-upload-label::after {
@@ -341,18 +341,12 @@
 }
 
 /* Action Buttons */
-.actions-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-}
+
 .actions-cell .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px; /* حجم موحد لكل زر */
+  width: 35px;
   height: 35px;
   border: none;
   border-radius: 5px;

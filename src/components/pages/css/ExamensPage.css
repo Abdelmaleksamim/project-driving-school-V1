@@ -130,11 +130,6 @@ background-color: #dcfce7;
 background-color: #fee2e2;
 }
 
-.actions-cell {
-display: flex;
-justify-content: center;
-gap: 10px;
-}
 .action-buttons {
   flex-direction: row;
 }

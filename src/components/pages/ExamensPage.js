@@ -6,7 +6,7 @@ const ExamensPage = () => {
     function formatDate(dateStr) {
     if (!dateStr) return '';
     const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-CA'); // Format YYYY-MM-DD
+    return date.toLocaleDateString('fr-CA');
     }
   // Exam states
   const [exam, setExam] = useState({
