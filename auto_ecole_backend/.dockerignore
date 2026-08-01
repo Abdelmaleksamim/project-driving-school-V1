@@ -1,4 +1,10 @@
 node_modules
 npm-debug.log
-.env
 .git
+.gitignore
+
+.env
+.env.production
+
+Dockerfile
+README.md

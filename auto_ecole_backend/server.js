@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const clientRoutes = require('./routes/clientRoutes');
 const paiementRoutes = require('./routes/paiementRoutes');
@@ -8,11 +7,20 @@ const pertesRoutes = require('./routes/pertes');
 const examensRoutes = require('./routes/examens');
 const statsRoute = require('./routes/statsRoute');
 
+const dotenv = require("dotenv");
 
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "production"
+      ? ".env.production"
+      : ".env",
+});
 
-dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}));
 app.use(express.json());
 
 

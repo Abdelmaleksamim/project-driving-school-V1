@@ -1,20 +1,13 @@
-# Use Node.js image
-FROM node:20-alpine
+FROM node:22-alpine
 
-# Create app directory inside container
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+RUN npm ci --omit=dev
 
-# Copy all project files
 COPY . .
 
-# Expose backend port
 EXPOSE 5000
 
-# Start application
 CMD ["npm", "start"]

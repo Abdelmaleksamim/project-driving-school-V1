@@ -113,3 +113,17 @@ cd auto_ecole_frontend
 npm run build
 ```
 This generates a static `build` folder that can be served using static hosts or the Express backend.
+
+
+## user has different permissions.
+```bash
+CREATE USER 'autoecole_user'@'localhost'
+IDENTIFIED BY 'Samim@@2005';
+```
+Means: Create a new MySQL account.
+```bash
+GRANT ALL PRIVILEGES
+ON auto_ecole.*
+TO 'autoecole_user'@'localhost';
+```
+Means: Give permissions.
