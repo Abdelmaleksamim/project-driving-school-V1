@@ -34,7 +34,7 @@ exports.addClient = async (req, res) => {
 
         const sql = `INSERT INTO Client SET ?`;
 
-        db.query(sql, newClient, (err, result) => {
+        db.query(sql, newClient, (err) => {
           if (err) return res.status(500).json({ error: err.message });
           res.status(201).json({
             message: 'Client ajouté avec succès',
@@ -47,9 +47,6 @@ exports.addClient = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
 
 // ✅ Get all clients
 exports.getAllClients = (req, res) => {
